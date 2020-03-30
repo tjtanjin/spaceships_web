@@ -241,12 +241,16 @@ var GameSceneOver = Class.create(Scene, {
 	    	if (xhr.readyState === 4) {
 	    		data = JSON.parse(xhr.responseText);
 	    		var newHighScore = false;
-	    		for (var i = 0; i < data.length; i++) {
-	    			if (score >= data[i]["score"]) {
-	    				newHighScore = true;
-	    				break;
-	    			}
-	    		}
+	    		if (data.length < 10) {
+	    			newHighScore = true;
+	    		} else {
+		    		for (var i = 0; i < data.length; i++) {
+		    			if (score >= data[i]["score"]) {
+		    				newHighScore = true;
+		    				break;
+		    			}
+		    		}
+		    	}
 	    		if (newHighScore == true) {
 	    			callback(data, parent);
 	    			var xhr2 = new XMLHttpRequest();
