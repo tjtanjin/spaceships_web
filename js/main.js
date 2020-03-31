@@ -5,10 +5,12 @@ window.onload = function() {
 
 	game.preload( 
 		'./res/space-player1life.png',
+		'./res/space-player2life.png',
 		'./res/space-powerup1.png',
 		'./res/space-powerup2.png',
 		'./res/space-powerup3.png',
 		'./res/space-ship_1.png',
+		'./res/space-ship_2.png',
 		'./res/space-stars.png',
 		'./res/space-meteor_small.png',
 		'./res/space-meteor_big.png',
@@ -121,8 +123,8 @@ var MainMenu = Class.create(Scene, {
     click: function(evt) {
     	if (evt.x >= 224 && evt.x <= 336 && evt.y >= 420 && evt.y <= 450) {
     		var game = Game.instance;
-	    	var gameScene = new GameScene();
-			game.pushScene(gameScene);
+	    	var gameModeSelect = new GameModeSelect();
+			game.pushScene(gameModeSelect);
 		} else if (evt.x >= 209 && evt.x <= 351 && evt.y >= 470 && evt.y <= 500) {
 			var game = Game.instance;
 	    	var controls = new Controls();
@@ -131,6 +133,113 @@ var MainMenu = Class.create(Scene, {
 			var game = Game.instance;
 	    	var leaderBoardSolo = new LeaderBoardSolo();
 			game.pushScene(leaderBoardSolo);
+		}
+
+   	},
+   	update: function(evt) {
+   		// set spawn rates
+		randomStarTime = Math.round(Math.random() * 6) + 5;
+   		// generate star
+	    this.generateStarTimer += evt.elapsed * 0.1;
+	    if (this.generateStarTimer >= randomStarTime) {
+	        var star = new Star(Math.floor(Math.random() * 560), -20);
+	        this.backgroundGroup.addChild(star);
+	        this.generateStarTimer = 0;
+	    }
+   	}
+});
+
+// GameModeSelect
+var GameModeSelect = Class.create(Scene, {
+	initialize: function() {
+        Scene.apply(this);
+
+        var game = Game.instance;
+        this.backgroundColor = 'black';
+
+        // labels
+		const label1 = new Label('Please select a');
+		label1.x = 130;
+		label1.y = 120;        
+		label1.color = 'white';
+		label1.font = '42px strong';
+		label1.textAlign = 'center';
+		label1._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black";
+
+		const label2 = new Label('gamemode:');
+		label2.x = 130;
+		label2.y = 170;        
+		label2.color = 'white';
+		label2.font = '42px strong';
+		label2.textAlign = 'center';
+		label2._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black";
+
+		const label3 = new Label('Single Player Mode');
+		label3.x = 128;
+		label3.y = 420;        
+		label3.color = 'lightgreen';
+		label3.font = '32px strong';
+		label3.textAlign = 'center';
+		label3._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"; 
+
+		const label4 = new Label('Two Player Mode');
+		label4.x = 128;
+		label4.y = 470;        
+		label4.color = 'orange';
+		label4.font = '32px strong';
+		label4.textAlign = 'center';
+		label4._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"; 
+
+		const label5 = new Label('Back');
+		label5.x = 128;
+		label5.y = 520;        
+		label5.color = 'lightgreen';
+		label5.font = '32px strong';
+		label5.textAlign = 'center';
+		label5._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"; 
+
+		spaceShip = new SpaceShip();
+		spaceShip.x = game.width/2 - spaceShip.width/2;
+		spaceShip.y = 300;
+
+		// groups
+		backgroundGroup = new Group();
+		this.backgroundGroup = backgroundGroup;
+
+		// add child
+		this.addChild(backgroundGroup);
+		this.addChild(spaceShip);
+		this.addChild(label1);
+		this.addChild(label2);
+		this.addChild(label3);
+		this.addChild(label4);
+		this.addChild(label5);
+
+		// default setup
+	    this.generateStarTimer = 0;
+
+		for (var i = 0; i < 100; i++) {
+			var star = new Star(Math.floor(Math.random() * 560), Math.floor(Math.random() * 780));
+			this.backgroundGroup.addChild(star);
+	        this.generateStarTimer = 0;
+		}
+
+		// add listeners
+		this.addEventListener(Event.TOUCH_START, this.click);
+		this.addEventListener(Event.ENTER_FRAME, this.update);
+    },
+    click: function(evt) {
+    	if (evt.x >= 154 && evt.x <= 406 && evt.y >= 420 && evt.y <= 450) {
+    		var game = Game.instance;
+	    	var gameScene = new GameScene("solo");
+			game.pushScene(gameScene);
+		} else if (evt.x >= 164 && evt.x <= 396 && evt.y >= 470 && evt.y <= 500) {
+			var game = Game.instance;
+	    	var gameScene = new GameScene("duo");
+			game.pushScene(gameScene);
+		} else if (evt.x >= 229 && evt.x <= 331 && evt.y >= 520 && evt.y <= 550) {
+			var game = Game.instance;
+			game.popScene();
 		}
 
    	},
@@ -284,7 +393,7 @@ var GameSceneOver = Class.create(Scene, {
     click: function(evt) {
     	if (evt.x >= 224 && evt.x <= 336 && evt.y >= 500 && evt.y <= 600) {
     		var game = Game.instance;
-	    	var gameScene = new GameScene();
+	    	var gameScene = new GameScene(this.mode);
 			game.replaceScene(gameScene);
 		} else if (evt.x >= 204 && evt.x <= 356 && evt.y >= 550 && evt.y <= 650) {
     		var game = Game.instance;

@@ -76,6 +76,9 @@ var PlayerLife = Class.create(Sprite, {
 		if (num == 1) {
 		    Sprite.apply(this,[77, 45]);
 		    this.image = Game.instance.assets['./res/space-player1life.png'];
+		} else {
+			Sprite.apply(this,[77, 45]);
+		    this.image = Game.instance.assets['./res/space-player2life.png'];
 		}
 	},
 });

@@ -3,16 +3,20 @@ enchant();
 // GameScene  
 var GameScene = Class.create(Scene, {
      // The main gameplay scene.     
-    initialize: function() {
-        var game, bg, spaceShip, effectsGroup, enemyGroup, pBulletGroup, smallex, meteorex, bossex, enemyCruiser, healthBar;
+    initialize: function(mode) {
+        var game, bg, spaceShip, playerGroup, effectsGroup, enemyGroup, pBulletGroup, smallex, meteorex, bossex, enemyCruiser, healthBar;
         Scene.apply(this);
 
         game = Game.instance;
+        game.keybind(27, 'quit');
         game.keybind(32, 'shoot');
+        game.keybind(80, 'shootalt');
+        game.keybind(65, 'leftalt');
+        game.keybind(68, 'rightalt');
         this.backgroundColor = 'black';
 
-        // default setup (solo mode only for now)
-        this.mode = "solo";
+        // default setup
+        this.mode = mode;
         this.smallex = new Audio('./res/space-sound_smallex.wav');
         this.meteorex = new Audio('./res/space-sound_meteorex.wav');
         this.bossex = new Audio('./res/space-sound_bossex.wav');
@@ -38,6 +42,10 @@ var GameScene = Class.create(Scene, {
 		backgroundGroup = new Group();
 		this.backgroundGroup = backgroundGroup;
 
+		// Player group
+		playerGroup = new Group();
+		this.playerGroup = playerGroup;
+
 		// Effects group
 		effectsGroup = new Group();
 		this.effectsGroup = effectsGroup;
@@ -55,16 +63,28 @@ var GameScene = Class.create(Scene, {
 		this.pBulletGroup = pBulletGroup;
 
 		// SpaceShip
-		spaceShip = new SpaceShip(pBulletGroup);
+		spaceShip = new SpaceShip(pBulletGroup, 1);
 		spaceShip.x = game.width/2 - spaceShip.width/2;
 		spaceShip.y = 700;
 		this.spaceShip = spaceShip;
+		if (this.mode == "duo") {
+			// setup player two
+			spaceShip.x -= 150
+			spaceShip2 = new SpaceShip(pBulletGroup, 2);
+			spaceShip2.x = game.width/2 - spaceShip2.width/2 + 150;
+			spaceShip2.y = 700;
+			this.spaceShip2 = spaceShip2;
+		}
 
         // add child
         this.addChild(backgroundGroup);
+        this.addChild(playerGroup);
         this.addChild(enemyGroup);
         this.addChild(pBulletGroup);
-        this.addChild(spaceShip);
+        this.playerGroup.addChild(spaceShip);
+        if (this.mode == "duo") {
+        	this.playerGroup.addChild(spaceShip2);
+       	}
         this.addChild(powerUpGroup);
         this.addChild(effectsGroup); 
         this.addChild(label);
@@ -87,10 +107,17 @@ var GameScene = Class.create(Scene, {
 		this.player1life1 = new PlayerLife(1);
 		this.player1life2 = new PlayerLife(1);
 		this.player1life3 = new PlayerLife(1);
-
 		this.effectsGroup.addChild(this.player1life1);
 		this.effectsGroup.addChild(this.player1life2);
 		this.effectsGroup.addChild(this.player1life3);
+		if (this.mode == "duo") {
+			this.player2life1 = new PlayerLife(2);
+			this.player2life2 = new PlayerLife(2);
+			this.player2life3 = new PlayerLife(2);
+			this.effectsGroup.addChild(this.player2life1);
+			this.effectsGroup.addChild(this.player2life2);
+			this.effectsGroup.addChild(this.player2life3);
+		}
 
 		for (var i = 0; i < 100; i++) {
 			var star = new Star(Math.floor(Math.random() * 560), Math.floor(Math.random() * 780));
@@ -105,9 +132,10 @@ var GameScene = Class.create(Scene, {
 			randomEnemySpinnerTime, randomEnemySpideyTime, randomEnemyTankTime,
 			randomPowerUp1Time, randomPowerUp2Time, randomPowerUp3Time
 
-    	player1life1 = this.player1life1;
-    	player1life2 = this.player1life2;
-    	player1life3 = this.player1life3;
+		if (game.input.quit) {
+			game.replaceScene(new GameSceneOver(this.score, this.mode));
+		}
+
     	// Score increase as time passes
 		this.scoreTimer += evt.elapsed * 0.01;
 		if (this.scoreTimer >= 0.5) {
@@ -217,29 +245,25 @@ var GameScene = Class.create(Scene, {
 			this.enemyGroup.addChild(enemyCruiser);
 			this.effectsGroup.addChild(healthBar);
             bossTime = true;
-		}
-		if (this.score == 4000 && bossTime == false) {
+		} else if (this.score == 4000 && bossTime == false) {
 			enemyCruiser = new EnemyCruiser(this.enemyGroup, 2);
 			healthBar = new HealthBar(175);
 			this.enemyGroup.addChild(enemyCruiser);
 			this.effectsGroup.addChild(healthBar);
             bossTime = true;
-		}
-		if (this.score == 6000 && bossTime == false) {
+		} else if (this.score == 6000 && bossTime == false) {
 			enemyCruiser = new EnemyCruiser(this.enemyGroup, 3);
 			healthBar = new HealthBar(175);
 			this.enemyGroup.addChild(enemyCruiser);
 			this.effectsGroup.addChild(healthBar);
             bossTime = true;
-		}
-		if (this.score == 8000 && bossTime == false) {
+		} else if (this.score == 8000 && bossTime == false) {
 			enemyCruiser = new EnemyCruiser(this.enemyGroup, 4);
 			healthBar = new HealthBar(200);
 			this.enemyGroup.addChild(enemyCruiser);
 			this.effectsGroup.addChild(healthBar);
             bossTime = true;
-		}
-		if (this.score == 10000 && bossTime == false) {
+		} else if (this.score == 10000 && bossTime == false) {
 			enemyCruiser = new EnemyCruiser(this.enemyGroup, 5);
 			healthBar = new HealthBar(250);
 			this.enemyGroup.addChild(enemyCruiser);
@@ -263,7 +287,7 @@ var GameScene = Class.create(Scene, {
 			// generate meteor
 		    this.generateMeteorTimer += evt.elapsed * 0.1;
 		    meteorType = ["smallMeteor", "bigMeteor"];
-		    type = meteorType[Math.floor(Math.random() * 1)];
+		    type = meteorType[Math.floor(Math.random())];
 		    if (this.generateMeteorTimer >= randomMeteorTime) {
 		        var meteor = new Meteor(type);
 		        this.enemyGroup.addChild(meteor);
@@ -330,27 +354,36 @@ var GameScene = Class.create(Scene, {
 		}
 
 	    // Check collision against player
-		for (var i = this.enemyGroup.childNodes.length -1; i >= 0; i--) {
+		for (var i = this.enemyGroup.childNodes.length - 1; i >= 0; i--) {
 	    	var enemy = this.enemyGroup.childNodes[i];
-	    	if (enemy.intersect(this.spaceShip)) {
-	    		enemy.explode(this.effectsGroup, this.audioDict[enemy.type]);
-	    		this.spaceShip.explode(this.effectsGroup);
-	    		if (enemy.type == "laser") {
-					this.spaceShip.health -= 0.06;
-	    		} else {
-				    this.enemyGroup.removeChild(enemy);
-					this.spaceShip.health -= 1;
+	    	for (var j = this.playerGroup.childNodes.length - 1; j >= 0; j--) {
+	    		var player = this.playerGroup.childNodes[j];
+	    		if (enemy.intersect(player)) {
+		    		enemy.explode(this.effectsGroup, this.audioDict[enemy.type]);
+		    		player.explode(this.effectsGroup);
+		    		if (enemy.type == "laser") {
+						player.health -= 0.06;
+		    		} else {
+					    this.enemyGroup.removeChild(enemy);
+						player.health -= 1;
+					}
+					if (player.health <= -1) {
+						this.playerGroup.removeChild(player);
+					}
+					break;
 				}
-				break;
-			}
+	    	}
 		}
 
-		for (var i = this.powerUpGroup.childNodes.length -1; i >= 0; i--) {
+		for (var i = this.powerUpGroup.childNodes.length - 1; i >= 0; i--) {
 	    	var powerUp = this.powerUpGroup.childNodes[i];
-	    	if (powerUp.intersect(this.spaceShip)) {
-	    		this.spaceShip.powerUp(powerUp.powerValue);
-			    this.powerUpGroup.removeChild(powerUp);
-				break;
+	    	for (var j = this.playerGroup.childNodes.length - 1; j >= 0; j--) {
+	    		var player = this.playerGroup.childNodes[j];
+		    	if (powerUp.intersect(player)) {
+		    		player.powerUp(powerUp.powerValue);
+				    this.powerUpGroup.removeChild(powerUp);
+					break;
+				}
 			}
 		}
 
@@ -359,13 +392,13 @@ var GameScene = Class.create(Scene, {
 		    var pBullet = this.pBulletGroup.childNodes[i];
 		    // laser tracing
 		    if (pBullet.type == "laser") {
-				if(game.input.left && !game.input.right){
+				if (game.input.left && !game.input.right){
 				    pBullet.x -= moveSpeed;
 				} else if(game.input.right && !game.input.left){
 				    pBullet.x += moveSpeed;
 				}
 		    }
-		    for (var j = this.enemyGroup.childNodes.length -1; j >= 0; j--) {
+		    for (var j = this.enemyGroup.childNodes.length - 1; j >= 0; j--) {
 		    	var enemy = this.enemyGroup.childNodes[j];
 		    	if (pBullet.intersect(enemy)) {
 		    		pBullet.explode(this.effectsGroup, this.smallex);
@@ -391,40 +424,109 @@ var GameScene = Class.create(Scene, {
 		}
 
 		// keyboard input
-		if(game.input.left && !game.input.right){
-		    this.spaceShip.x -= moveSpeed;
-		} else if(game.input.right && !game.input.left){
-		    this.spaceShip.x += moveSpeed;
-		}
-		if (game.input.shoot) {
-			this.spaceShip.shoot();
+		if (this.mode == "solo") {
+			// player 1 controls
+			if(game.input.left && !game.input.right){
+			    this.spaceShip.x -= moveSpeed;
+			} else if(game.input.right && !game.input.left){
+			    this.spaceShip.x += moveSpeed;
+			}
+			if (game.input.shoot && this.spaceShip.health > -1) {
+				this.spaceShip.shoot();
+			}
+		} else {
+			// player 1 controls
+			if(game.input.leftalt && !game.input.rightalt){
+			    this.spaceShip.x -= moveSpeed;
+			} else if(game.input.rightalt && !game.input.leftalt){
+			    this.spaceShip.x += moveSpeed;
+			}
+			if (game.input.shoot && this.spaceShip.health > -1) {
+				this.spaceShip.shoot();
+			}
+			// player 2 controls
+			if(game.input.left && !game.input.right){
+			    this.spaceShip2.x -= moveSpeed;
+			} else if(game.input.right && !game.input.left){
+			    this.spaceShip2.x += moveSpeed;
+			}
+			if (game.input.shootalt && this.spaceShip2.health > -1) {
+				this.spaceShip2.shoot();
+			}
 		}
 
 		// player life display
 		if (this.spaceShip.health > 1) {
-            player1life1.x = 442;
-            player1life1.y = 10;
-            player1life2.x = 462;
-            player1life2.y = 10;
-            player1life3.x = 482;
-            player1life3.y = 10;
+            this.player1life1.x = 442;
+            this.player1life1.y = 10;
+            this.player1life2.x = 462;
+            this.player1life2.y = 10;
+            this.player1life3.x = 482;
+            this.player1life3.y = 10;
         } else if (this.spaceShip.health <= 1 && this.spaceShip.health > 0) {
-            player1life1.x = 442;
-            player1life1.y = -100;
-            player1life2.x = 462;
-            player1life2.y = 10;
-            player1life3.x = 482;
-            player1life3.y = 10;
+            this.player1life1.x = 442;
+            this.player1life1.y = -100;
+            this.player1life2.x = 462;
+            this.player1life2.y = 10;
+            this.player1life3.x = 482;
+            this.player1life3.y = 10;
         } else if (this.spaceShip.health <= 0 && this.spaceShip.health > -1) {
-            player1life1.x = 442;
-            player1life1.y = -100;
-            player1life2.x = 462;
-            player1life2.y = -100;
-            player1life3.x = 482;
-            player1life3.y = 10;
-        } else if (this.spaceShip.health <= -1) {
-            this.spaceShip.health = -1
-			game.replaceScene(new GameSceneOver(this.score, this.mode)); 
+            this.player1life1.x = 442;
+            this.player1life1.y = -100;
+            this.player1life2.x = 462;
+            this.player1life2.y = -100;
+            this.player1life3.x = 482;
+            this.player1life3.y = 10;
+        } else {
+        	this.player1life1.x = 442;
+            this.player1life1.y = -100;
+            this.player1life2.x = 462;
+            this.player1life2.y = -100;
+            this.player1life3.x = 482;
+            this.player1life3.y = -100;
+        }
+
+        if (this.mode == "duo") {
+        	if (this.spaceShip2.health > 1) {
+	            this.player2life1.x = 442;
+	            this.player2life1.y = 30;
+	            this.player2life2.x = 462;
+	            this.player2life2.y = 30;
+	            this.player2life3.x = 482;
+	            this.player2life3.y = 30;
+	        } else if (this.spaceShip2.health <= 1 && this.spaceShip2.health > 0) {
+	            this.player2life1.x = 442;
+	            this.player2life1.y = -100;
+	            this.player2life2.x = 462;
+	            this.player2life2.y = 30;
+	            this.player2life3.x = 482;
+	            this.player2life3.y = 30;
+	        } else if (this.spaceShip2.health <= 0 && this.spaceShip2.health > -1) {
+	            this.player2life1.x = 442;
+	            this.player2life1.y = -100;
+	            this.player2life2.x = 462;
+	            this.player2life2.y = -100;
+	            this.player2life3.x = 482;
+	            this.player2life3.y = 30;
+	        } else {
+	        	this.player2life1.x = 442;
+	            this.player2life1.y = -100;
+	            this.player2life2.x = 462;
+	            this.player2life2.y = -100;
+	            this.player2life3.x = 482;
+	            this.player2life3.y = -100;
+	        }
+        }
+
+        if (this.mode == "solo") {
+        	if (this.spaceShip.health <= -1) {
+        		game.replaceScene(new GameSceneOver(this.score, this.mode)); 
+        	}
+        } else {
+        	if (this.spaceShip.health <= -1 && this.spaceShip2.health <= -1) {
+        		game.replaceScene(new GameSceneOver(this.score, this.mode)); 
+        	}
+
         }
 	},
 	setScore: function (value) {
