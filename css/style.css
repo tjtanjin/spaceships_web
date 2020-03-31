@@ -1,0 +1,164 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Source Sans Pro';
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+.masthead {
+    min-height: 30rem;
+    position: relative;
+    display: table;
+    width: 100%;
+    height: auto;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    background-color: black;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.masthead h1 {
+    font-size: 4rem;
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 992px) {
+    .masthead {
+        height: 100vh;
+    }
+    .masthead h1 {
+        font-size: 5.5rem;
+    }
+}
+
+.btn-xl {
+    padding: 1.25rem 2.5rem;
+}
+
+.btn {
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-dark:hover {
+    border-color: yellow;
+    color: yellow;
+}
+
+.btn-dark {
+    background-color: black;
+    border-color: white;
+    border-width: 3px;
+}
+
+.title {
+    color: white;
+}
+
+.subtitle {
+    color: yellow;
+}
+
+.icon {
+    color: white;
+}
+
+
+/* Stars 
+------------------------------------- */
+
+#space, .stars {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.stars {
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: zoom 2s infinite;
+    opacity: 0;
+    position: absolute;
+    z-index: 2;
+}
+
+.stars:nth-child(1) {
+    background-position: 50% 50%;
+    animation-delay: 0s;
+}
+.stars:nth-child(2) {
+    background-position: 20% 60%;
+    animation-delay: 500ms;
+}
+.stars:nth-child(3) {
+    background-position: -20% -30%;
+    animation-delay: 1s;
+}
+.stars:nth-child(4) {
+    background-position: 40% -80%;
+    animation-delay: 1500ms;
+}
+.stars:nth-child(5) {
+    background-position: -20% 30%;
+    animation-delay: 2s;
+}
+.stars:nth-child(6) {
+    background-position: 40% -80%;
+    animation-delay: 2500ms;
+}
+.stars:nth-child(7) {
+    background-position: -20% 30%;
+    animation-delay: 3s;
+}
+.stars:nth-child(8) {
+    background-position: -20% 30%;
+    animation-delay: 3500ms;
+}
+.stars:nth-child(9) {
+    background-position: 40% -80%;
+    animation-delay: 4s;
+}
+
+@keyframes zoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+        animation-timing-function: ease-in;
+    } 
+    85% {
+        opacity: 1;
+        transform: scale(2.8);
+        animation-timing-function: linear;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(3.5);
+    }
+}
+
+body {
+    background: #000;
+}
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+        <title>SpaceShips</title>
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+        <script src="js/lib/enchant.min.js"></script>
+        <script src="js/enemyChars.js"></script>
+        <script src="js/friendlyChars.js"></script>
+        <script src="js/effects.js"></script> 
+        <script src="js/leaderBoard.js"></script> 
+        <script src="js/gameScene.js"></script> 
+        <script src="js/controls.js"></script> 
+        <script src="js/config.js"></script> 
+        <script src="js/main.js"></script>
+        <script src="js/lol.js"></script>
+        <script>
+            function handleResize() {
+                console.log("HI");
+                var w = window.outerWidth;
+                var h = window.outerHeight;
+                if (w > 575) {
+                    window.resizeTo(575, h);
+                }
+                if (h > 845) {
+                    window.resizeTo(w, 845);
+                }
+            }
+
+            window.addEventListener("resize", handleResize); 
+        </script> 
+    </head>
+    <body>
+         <div style="width:800px; margin:0 auto;"></div>
+    </body>
+</html>

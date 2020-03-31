@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
-        <title>SpaceShips</title>
-        <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
-        <script src="js/lib/enchant.min.js"></script>
-        <script src="js/enemyChars.js"></script>
-        <script src="js/friendlyChars.js"></script>
-        <script src="js/effects.js"></script> 
-        <script src="js/leaderBoard.js"></script> 
-        <script src="js/gameScene.js"></script> 
-        <script src="js/controls.js"></script> 
-        <script src="js/config.js"></script> 
-        <script src="js/main.js"></script>     
-    </head>
-    <body>
-         <div style="width:800px; margin:0 auto;"></div>
-    </body>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+		<title>SpaceShips</title>
+
+    	<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+		<!-- Custom fonts for this template -->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+		<!-- Custom CSS -->
+		<link href="css/style.css" rel="stylesheet">
+
+	</head>
+	<body>
+		<!-- Main Page -->
+		<header class="masthead d-flex">
+			<div class="container text-center my-auto">
+				<h1 class="mb-1 title">Welcome onboard SpaceShips!</h1>
+			    <h3 class="mb-5 subtitle">A classic arcade space game</h3>
+			    <button class="btn btn-dark btn-xl" onclick="window.open('https://spaceships.tjtanjin.com/game', 'SpaceShips', 'height=795, width=575, left=500', false)" >Launch SpaceShip</button>
+			    <br/><br/><br/>
+			    <a class="btn" href="https://github.com/tjtanjin/spaceships_web" target="_blank" rel="noopener noreferrer">
+			        <i class="fab fa-github fa-3x icon"></i>
+			    </a>
+			</div>
+			<div id="space">
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+				<div class="stars"></div>
+			</div>
+
+			<div class="overlay"></div>
+		</header>
+		</div>
+	</body>
 </html>
