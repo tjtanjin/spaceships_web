@@ -30,9 +30,6 @@ var SpaceShip = Class.create(Sprite, {
 	},
 	powerUp: function(type) {
 		var powerUpSound;
-		this.powerUp1Time = 0;
-		this.powerUp2Time = 0;
-        this.powerUp4Time = 0;
         if (type == 3) {
         	powerUpSound = new Audio('./res/space-sound_heal.wav');
         	this.health += 1;
@@ -40,6 +37,9 @@ var SpaceShip = Class.create(Sprite, {
         		this.health = 2;
         	}
         } else {
+        	this.powerUp1Time = 0;
+			this.powerUp2Time = 0;
+	        this.powerUp4Time = 0;
         	powerUpSound = new Audio('./res/space-sound_powerup.wav');
         	this.powerType = type;
        	}
