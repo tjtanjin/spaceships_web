@@ -147,10 +147,10 @@ var GameScene = Class.create(Scene, {
 		}
     },
     touchMoveStart: function(evt) {
-    	if (evt.x >= 460 && evt.x <= 557 && evt.y >= 698 && evt.y <= 775) {
+    	if (evt.x >= 445 && evt.x <= 557 && evt.y >= 683 && evt.y <= 775) {
     		this.toRight = true;
     		this.move = true;
-    	} else if (evt.x >= 3 && evt.x <= 100 && evt.y >= 698 && evt.y <= 775) {
+    	} else if (evt.x >= 3 && evt.x <= 115 && evt.y >= 683 && evt.y <= 775) {
     		this.toLeft = true;
     		this.move = true;
     	}
