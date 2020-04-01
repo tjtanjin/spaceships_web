@@ -3,9 +3,10 @@ enchant();
 // GameScene  
 var GameScene = Class.create(Scene, {
      // The main gameplay scene.     
-    initialize: function(mode) {
+    initialize: function(mode, device) {
         var game, bg, spaceShip, playerGroup, effectsGroup, enemyGroup, pBulletGroup, smallex, meteorex, bossex, enemyCruiser, healthBar;
         Scene.apply(this);
+        this.device = device;
 
         game = Game.instance;
         game.keybind(27, 'quit');
@@ -76,8 +77,26 @@ var GameScene = Class.create(Scene, {
 			this.spaceShip2 = spaceShip2;
 		}
 
+		this.addChild(backgroundGroup);
+
+		if (device == "mobile") {
+			// mobile controls
+			this.move = false;
+			this.toRight = false;
+			this.toLeft = false;
+			var rightArrow = new Arrow("right");
+			rightArrow.x = 480;
+			rightArrow.y = 710;
+			var leftArrow = new Arrow("left");
+			leftArrow.x = 23;
+			leftArrow.y = 710;
+			this.addChild(rightArrow);
+			this.addChild(leftArrow);
+			this.addEventListener(Event.TOUCH_START, this.touchMoveStart);
+			this.addEventListener(Event.TOUCH_END, this.touchMoveStop);
+		}
+
         // add child
-        this.addChild(backgroundGroup);
         this.addChild(playerGroup);
         this.addChild(enemyGroup);
         this.addChild(pBulletGroup);
@@ -88,6 +107,8 @@ var GameScene = Class.create(Scene, {
         this.addChild(powerUpGroup);
         this.addChild(effectsGroup); 
         this.addChild(label);
+
+        // add listeners
         this.addEventListener(Event.ENTER_FRAME, this.update);
 
         // initialize values
@@ -124,6 +145,20 @@ var GameScene = Class.create(Scene, {
 			this.backgroundGroup.addChild(star);
 	        this.generateStarTimer = 0;
 		}
+    },
+    touchMoveStart: function(evt) {
+    	if (evt.x >= 480 && evt.x <= 537 && evt.y >= 708 && evt.y <= 765) {
+    		this.toRight = true;
+    		this.move = true;
+    	} else if (evt.x >= 23 && evt.x <= 80 && evt.y >= 708 && evt.y <= 765) {
+    		this.toLeft = true;
+    		this.move = true;
+    	}
+    },
+    touchMoveStop: function(evt) {
+    	this.move = false;
+    	this.toRight = false;
+    	this.toLeft = false;
     },
     update: function(evt) {
     	var moveSpeed = 7;
@@ -454,6 +489,16 @@ var GameScene = Class.create(Scene, {
 				this.spaceShip2.shoot();
 			}
 		}
+		if (this.device == "mobile") {
+			if (this.move) {
+		    	if (this.toRight) {
+		    		this.spaceShip.x += moveSpeed;
+		    	} else {
+		    		this.spaceShip.x -= moveSpeed;
+		    	}
+	        }
+	        this.spaceShip.shoot();
+	    }
 
 		// player life display
 		if (this.spaceShip.health > 1) {
@@ -520,11 +565,11 @@ var GameScene = Class.create(Scene, {
 
         if (this.mode == "solo") {
         	if (this.spaceShip.health <= -1) {
-        		game.replaceScene(new GameSceneOver(this.score, this.mode)); 
+        		game.replaceScene(new GameSceneOver(this.score, this.mode, this.device)); 
         	}
         } else {
         	if (this.spaceShip.health <= -1 && this.spaceShip2.health <= -1) {
-        		game.replaceScene(new GameSceneOver(this.score, this.mode)); 
+        		game.replaceScene(new GameSceneOver(this.score, this.mode, this.device)); 
         	}
 
         }

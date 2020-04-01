@@ -1,7 +1,7 @@
 enchant();
 
 // LeaderBoardSolo
-var Controls = Class.create(Scene, {
+var ComControls = Class.create(Scene, {
 	initialize: function() {
         Scene.apply(this);
 

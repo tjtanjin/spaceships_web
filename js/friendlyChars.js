@@ -3,6 +3,7 @@ enchant();
 var SpaceShip = Class.create(Sprite, {    
 	initialize: function(pBulletGroup, num) {
 		// default setup
+		var game = Game.instance;
 	    Sprite.apply(this,[115, 67]);
 	    if (num == 1) {
 	    	this.image = Game.instance.assets['./res/space-ship_1.png'];

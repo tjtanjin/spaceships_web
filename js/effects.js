@@ -73,11 +73,10 @@ var Star = Class.create(Sprite, {
 var PlayerLife = Class.create(Sprite, {
 	initialize: function(num) {
 		// default setup
+		Sprite.apply(this,[77, 45]);
 		if (num == 1) {
-		    Sprite.apply(this,[77, 45]);
 		    this.image = Game.instance.assets['./res/space-player1life.png'];
 		} else {
-			Sprite.apply(this,[77, 45]);
 		    this.image = Game.instance.assets['./res/space-player2life.png'];
 		}
 	},
@@ -96,4 +95,16 @@ var HealthBar = Class.create(Sprite, {
 	trackHealth: function(currentValue) {
 		this.width = currentValue / this.max * 320
 	}
+});
+
+var Arrow = Class.create(Sprite, {
+	initialize: function(direction) {
+		// default setup
+		Sprite.apply(this,[57, 57]);
+		if (direction == "right") {
+		    this.image = Game.instance.assets['./res/space-rightarrow.png'];
+		} else {
+		    this.image = Game.instance.assets['./res/space-leftarrow.png'];
+		}
+	},
 });

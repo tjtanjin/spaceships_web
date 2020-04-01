@@ -2,6 +2,7 @@ enchant();
 
 window.onload = function() {
 	var game = new Game(560, 780);
+	var device;
 
 	game.preload( 
 		'./res/space-player1life.png',
@@ -29,13 +30,21 @@ window.onload = function() {
 		'./res/space-pbullet.png',
 		'./res/space-pbullet2.png',
 		'./res/space-healthBar.png',
+		'./res/space-leftarrow.png',
+		'./res/space-rightarrow.png'
 	);
 
 	game.fps = 60;
-	game.scale = 1;
+	if (window.opengame("placeholder", true)) {
+		device = "mobile";
+		game.scale = window.outerWidth/590;
+	} else {
+		device = "com";
+		game.scale = 1;
+	}
 	game.onload = function() {
 		console.log("SpaceShips Loaded.");
-		var mainMenu = new MainMenu();
+		var mainMenu = new MainMenu(device);
 		game.pushScene(mainMenu);
 	}
 	game.start();   
@@ -43,8 +52,9 @@ window.onload = function() {
 
 // MainMenu
 var MainMenu = Class.create(Scene, {
-	initialize: function() {
+	initialize: function(device) {
         Scene.apply(this);
+        this.device = device;
 
         var game = Game.instance;
         this.backgroundColor = 'black';
@@ -123,11 +133,15 @@ var MainMenu = Class.create(Scene, {
     click: function(evt) {
     	if (evt.x >= 224 && evt.x <= 336 && evt.y >= 420 && evt.y <= 450) {
     		var game = Game.instance;
-	    	var gameModeSelect = new GameModeSelect();
+	    	var gameModeSelect = new GameModeSelect(this.device);
 			game.pushScene(gameModeSelect);
 		} else if (evt.x >= 209 && evt.x <= 351 && evt.y >= 470 && evt.y <= 500) {
 			var game = Game.instance;
-	    	var controls = new Controls();
+			if (this.device == "mobile") {
+				var controls = new MobileControls();
+			} else {
+				var controls = new ComControls();
+			}
 			game.pushScene(controls);
 		} else if (evt.x >= 174 && evt.x <= 386 && evt.y >= 520 && evt.y <= 550) {
 			var game = Game.instance;
@@ -151,8 +165,9 @@ var MainMenu = Class.create(Scene, {
 
 // GameModeSelect
 var GameModeSelect = Class.create(Scene, {
-	initialize: function() {
+	initialize: function(device) {
         Scene.apply(this);
+        this.device = device;
 
         var game = Game.instance;
         this.backgroundColor = 'black';
@@ -212,7 +227,11 @@ var GameModeSelect = Class.create(Scene, {
 		this.addChild(label1);
 		this.addChild(label2);
 		this.addChild(label3);
-		this.addChild(label4);
+		if (this.device == "com") {
+			this.addChild(label4);
+		} else {
+			label5.y = 470;
+		}
 		this.addChild(label5);
 
 		// default setup
@@ -229,17 +248,28 @@ var GameModeSelect = Class.create(Scene, {
 		this.addEventListener(Event.ENTER_FRAME, this.update);
     },
     click: function(evt) {
-    	if (evt.x >= 154 && evt.x <= 406 && evt.y >= 420 && evt.y <= 450) {
-    		var game = Game.instance;
-	    	var gameScene = new GameScene("solo");
-			game.pushScene(gameScene);
-		} else if (evt.x >= 164 && evt.x <= 396 && evt.y >= 470 && evt.y <= 500) {
-			var game = Game.instance;
-	    	var gameScene = new GameScene("duo");
-			game.pushScene(gameScene);
-		} else if (evt.x >= 229 && evt.x <= 331 && evt.y >= 520 && evt.y <= 550) {
-			var game = Game.instance;
-			game.popScene();
+    	if (this.device == "com") {
+	    	if (evt.x >= 154 && evt.x <= 406 && evt.y >= 420 && evt.y <= 450) {
+	    		var game = Game.instance;
+		    	var gameScene = new GameScene("solo", this.device);
+				game.pushScene(gameScene);
+			} else if (evt.x >= 164 && evt.x <= 396 && evt.y >= 470 && evt.y <= 500) {
+				var game = Game.instance;
+		    	var gameScene = new GameScene("duo", this.device);
+				game.pushScene(gameScene);
+			} else if (evt.x >= 229 && evt.x <= 331 && evt.y >= 520 && evt.y <= 550) {
+				var game = Game.instance;
+				game.popScene();
+			}
+		} else {
+			if (evt.x >= 154 && evt.x <= 406 && evt.y >= 420 && evt.y <= 450) {
+	    		var game = Game.instance;
+		    	var gameScene = new GameScene("solo", this.device);
+				game.pushScene(gameScene);
+			} else if (evt.x >= 229 && evt.x <= 331 && evt.y >= 470 && evt.y <= 500) {
+				var game = Game.instance;
+				game.popScene();
+			}
 		}
 
    	},
@@ -258,8 +288,9 @@ var GameModeSelect = Class.create(Scene, {
 
 // GameSceneOver  
 var GameSceneOver = Class.create(Scene, {
-    initialize: function(score, mode) {
+    initialize: function(score, mode, device) {
         Scene.apply(this);
+        this.device = device;
 
         var game = Game.instance;
         this.backgroundColor = 'black';
@@ -393,11 +424,11 @@ var GameSceneOver = Class.create(Scene, {
     click: function(evt) {
     	if (evt.x >= 224 && evt.x <= 336 && evt.y >= 500 && evt.y <= 600) {
     		var game = Game.instance;
-	    	var gameScene = new GameScene(this.mode);
+	    	var gameScene = new GameScene(this.mode, this.device);
 			game.replaceScene(gameScene);
 		} else if (evt.x >= 204 && evt.x <= 356 && evt.y >= 550 && evt.y <= 650) {
     		var game = Game.instance;
-	    	var mainMenu = new MainMenu();
+	    	var mainMenu = new MainMenu(this.device);
 			game.replaceScene(mainMenu);
 		}
    	},
