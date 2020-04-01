@@ -20,6 +20,8 @@ var SpaceShip = Class.create(Sprite, {
 		this.powerUp2Time = 0;
         this.powerUp4Time = 0;
         this.type = "player";
+        this.pBulletSound1 = new Audio('./res/space-sound_pbullet.wav');
+        this.pBulletSound2 = new Audio('./res/space-sound_pbullet2.wav');
 	},
 	explode: function(effectsGroup) {
 		var dispX = Math.floor(Math.random() * 5) + 40;
@@ -54,8 +56,8 @@ var SpaceShip = Class.create(Sprite, {
 				this.pBulletGroup.addChild(pBullet1);
 				this.pBulletGroup.addChild(pBullet2);
 				this.shootTime = 0;
-				var pBulletSound = new Audio('./res/space-sound_pbullet.wav');
-				pBulletSound.play();
+				this.pBulletSound1.currentTime = 0;
+				this.pBulletSound1.play();
 			}
 		} else if (this.powerType == 1) {
 			if (this.shootTime >= 0.18) {     
@@ -66,8 +68,8 @@ var SpaceShip = Class.create(Sprite, {
 				this.pBulletGroup.addChild(pBullet2);
 				this.pBulletGroup.addChild(pBullet3);
 				this.shootTime = 0;
-				var pBulletSound = new Audio('./res/space-sound_pbullet.wav');
-				pBulletSound.play();
+				this.pBulletSound1.currentTime = 0;
+				this.pBulletSound1.play();
 			}
 		} else if (this.powerType == 2) {
 			if (this.shootTime >= 0.14) {
@@ -76,8 +78,8 @@ var SpaceShip = Class.create(Sprite, {
 				this.pBulletGroup.addChild(pBullet1);
 				this.pBulletGroup.addChild(pBullet2);
 				this.shootTime = 0;
-				var pBulletSound = new Audio('./res/space-sound_pbullet2.wav');
-				pBulletSound.play();
+				this.pBulletSound2.currentTime = 0;
+				this.pBulletSound2.play();
 			}
 		}
 	},

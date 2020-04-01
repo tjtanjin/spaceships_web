@@ -91,13 +91,14 @@ var EnemySpinner = Class.create(Sprite, {
 	    this.y = y;
 	    this.enemyGroup = enemyGroup;
 	    this.shootTime = 0;
-	    this.type = "enemyShip";    
+	    this.type = "enemyShip";
+	    this.eBulletSound = new Audio('./res/space-sound_ebullet.wav');
 	},
 	shoot: function (evt) {
 	    var eBullet = new EnemyBullet(this.x + 35, this.y + 80, "bullet");
 		this.enemyGroup.addChild(eBullet);
-		var eBulletSound = new Audio('./res/space-sound_ebullet.wav');
-		eBulletSound.play();
+		this.eBulletSound.currentTime = 0;
+		this.eBulletSound.play();
 	},
 	explode: function(effectsGroup, sound) {
 		var dispX = Math.floor(Math.random() * 20) + 10;
@@ -145,15 +146,16 @@ var EnemySpidey = Class.create(Sprite, {
 	    this.y = y;
 	    this.enemyGroup = enemyGroup;
 	    this.shootTime = 0;
-	    this.type = "enemyShip";    
+	    this.type = "enemyShip";
+	    this.eBulletSound = new Audio('./res/space-sound_ebullet.wav');   
 	},
 	shoot: function (evt) {
 	    var eBullet1 = new EnemyBullet(this.x + 32, this.y + 65, "bullet");
 	    var eBullet2 = new EnemyBullet(this.x + 42, this.y + 65, "bullet");
 		this.enemyGroup.addChild(eBullet1);
 		this.enemyGroup.addChild(eBullet2);
-		var eBulletSound = new Audio('./res/space-sound_ebullet.wav');
-		eBulletSound.play();
+		this.eBulletSound.currentTime = 0;
+		this.eBulletSound.play();
 	},
 	explode: function(effectsGroup, sound) {
 		var dispX = Math.floor(Math.random() * 20) + 10;
@@ -204,19 +206,21 @@ var EnemyTank = Class.create(Sprite, {
 	    this.type = "enemyShip";
 	    this.entranceTime = 0;
 	    this.laserTime = 0;
+	    this.eBulletSound1 = new Audio('./res/space-sound_ebullet.wav');
+	    this.eBulletSound2 = new Audio('./res/space-sound_ebullet2.wav');
 	},
 	shoot: function (evt) {
 	    var eBullet = new EnemyBullet(this.x + 39, this.y + 55, "bullet");
 		this.enemyGroup.addChild(eBullet);
-		var eBulletSound = new Audio('./res/space-sound_ebullet.wav');
-		eBulletSound.play();
+		this.eBulletSound1.currentTime = 0;
+		this.eBulletSound1.play();
 	},
 	laser: function (evt) {
 		var eBullet = new EnemyBullet(this.x + 35, this.y + 83, "laser");
 		this.enemyGroup.addChild(eBullet);
 		this.laserTime = 0;
-		var eBulletSound = new Audio('./res/space-sound_ebullet2.wav');
-		eBulletSound.play();
+		this.eBulletSound2.currentTime = 0;
+		this.eBulletSound2.play();
 	},
 	explode: function(effectsGroup, sound) {
 		var dispX = Math.floor(Math.random() * 20) + 10;
@@ -362,6 +366,8 @@ var EnemyCruiser = Class.create(Sprite, {
 	    this.type = "boss";
 	    this.generateEnemyTimer = 0;
 	    this.level = level;
+	    this.eBulletSound1 = new Audio('./res/space-sound_ebullet.wav');
+	    this.eBulletSound2 = new Audio('./res/space-sound_ebullet2.wav');
 	},
 	spawnEnemy: function (evt) {
 		if (this.level == 1) {
@@ -404,15 +410,15 @@ var EnemyCruiser = Class.create(Sprite, {
 		this.enemyGroup.addChild(eBullet2);
 		this.enemyGroup.addChild(eBullet3);
 		this.enemyGroup.addChild(eBullet4);
-		var eBulletSound = new Audio('./res/space-sound_ebullet.wav');
-		eBulletSound.play();
+		this.eBulletSound1.currentTime = 0;
+		this.eBulletSound1.play();
 	},
 	laser: function (evt) {
 		var eBullet = new EnemyBullet(this.x + 205, this.y + 220, "laser");
 		this.enemyGroup.addChild(eBullet);
 		this.laserTime = 0;
-		var eBulletSound = new Audio('./res/space-sound_ebullet2.wav');
-		eBulletSound.play();
+		this.eBulletSound2.currentTime = 0;
+		this.eBulletSound2.play();
 	},
 	explode: function(effectsGroup, sound) {
 		var dispX1 = Math.floor(Math.random() * 100) + 80;
