@@ -297,13 +297,21 @@ var GameSceneOver = Class.create(Scene, {
         this.mode = mode;
 
         // labels
-		const label1 = new Label('Game Over!');
+		const label1 = new Label('Game');
 		label1.x = 130;
-		label1.y = 120;        
+		label1.y = 100;        
 		label1.color = 'red';
 		label1.font = '64px strong';
 		label1.textAlign = 'center';
 		label1._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black";
+
+		const label6 = new Label('Over!');
+		label6.x = 130;
+		label6.y = 160;        
+		label6.color = 'red';
+		label6.font = '64px strong';
+		label6.textAlign = 'center';
+		label6._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black";
 
 		const label2 = new Label('Your Score:');
 		label2.x = 130;
@@ -359,6 +367,7 @@ var GameSceneOver = Class.create(Scene, {
 		this.addChild(label3);
 		this.addChild(label4);
 		this.addChild(label5);
+		this.addChild(label6);
 
 		// default setup
 	    this.generateStarTimer = 0;
