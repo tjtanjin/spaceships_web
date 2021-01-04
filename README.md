@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/qA8nNNh.gif" />
+  <img src="https://i.imgur.com/MpyZk4N.gif" />
   <h1 align="center">SpaceShips Web</h1>
 </p>
 
@@ -36,12 +36,20 @@ Technologies used by SpaceShips Web are as below:
 
 <p align="center">
   <img height="150" width="150" src="https://i.imgur.com/lXu9kox.png"/>
+</p>
+<p align="center">
+HTML
+</p>
+<p align="center">
   <img height="150" width="150" src="https://i.imgur.com/SQKE9WW.png"/>
+</p>
+<p align="center">
+CSS
+</p>
+<p align="center">
   <img height="150" width="150" src="https://i.imgur.com/1D3AoId.png"/>
 </p>
 <p align="center">
-&nbsp&nbsp&nbsp&nbsp&nbspHTML&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-CSS&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 JavaScript
 </p>
 
