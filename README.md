@@ -89,7 +89,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
 RewriteRule ^(.*)$ $1.html
 ```
-* If you wish to test the game locally, clicking on index.html will launch the game window. If you wish to host this game publicly on the web, further setup of a server with XAMPP and Apache2 is required and you may refer to the guide here (link to be added).
+* If you wish to test the game locally, clicking on index.html will launch the game window. If you wish to host this game publicly on the web, further setup of a server with XAMPP and Apache2 is required and you may refer to the guide [here](https://gist.github.com/tjtanjin/29875407defe183c5147bb854f9e69ae).
 * Note: Do remember to have Enchant.js installed or the game will not run!
 
 ### Team
