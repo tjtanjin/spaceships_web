@@ -70,7 +70,7 @@ https://github.com/tjtanjin/spaceships_web
 The following section will guide you through setting up your own SpaceShips Web edition!
 * First, cd to the directory of where you wish to store the project and clone this repository. An example is provided below:
 ```
-$ cd home/user/exampleuser/projects/
+$ cd /home/user/exampleuser/projects/
 $ git clone https://github.com/tjtanjin/spaceships_web.git
 ```
 * Following which, unzip res.zip which contains the images and audio files for the project. You may remove the res.zip file after that.
