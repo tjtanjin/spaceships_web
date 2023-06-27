@@ -35,7 +35,7 @@ window.onload = function() {
 	);
 
 	game.fps = 60;
-	if (window.opengame("placeholder", true)) {
+	if (window.opengame(true)) {
 		device = "mobile";
 		game.scale = window.outerWidth/590;
 	} else {
